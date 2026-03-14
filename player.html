@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RETRO VAULT — Player</title>
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/player.css">
+</head>
+<body class="player-page crt-overlay">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HEADER MINIMAL
+  ════════════════════════════════════════════════════════════════════════ -->
+  <header id="player-header">
+    <button id="back-btn" aria-label="Retour à la bibliothèque">← BACK</button>
+
+    <span id="player-game-title">Loading...</span>
+    <span id="player-console-badge"></span>
+
+    <!-- Spacer -->
+    <div style="flex: 1;"></div>
+
+    <!-- Badge manette -->
+    <div id="gamepad-badge" title="Aucune manette connectée" role="status" aria-label="État manette">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M17 4H7C4.2 4 2 6.2 2 9v2c0 2.8 2.2 5 5 5h2l2 2.5L13 16h4c2.8 0 5-2.2 5-5V9c0-2.8-2.2-5-5-5z"/>
+        <rect x="5" y="10" width="4" height="1.5" rx="0.5"/>
+        <rect x="6.25" y="8.75" width="1.5" height="4" rx="0.5"/>
+        <circle cx="16.5" cy="9.5" r="0.9"/>
+        <circle cx="18.5" cy="11" r="0.9"/>
+        <circle cx="14.5" cy="11" r="0.9"/>
+        <circle cx="16.5" cy="12.5" r="0.9"/>
+        <rect x="10.5" y="10.5" width="1.5" height="0.9" rx="0.45"/>
+        <rect x="12.5" y="10.5" width="1.5" height="0.9" rx="0.45"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       LAYOUT : émulateur + panneau info
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div id="player-main">
+
+    <!-- Zone émulateur -->
+    <div id="emulator-wrapper">
+
+      <!-- Overlay de chargement -->
+      <div id="loading-overlay" aria-live="polite" role="status">
+        <div id="loading-text">LOADING ROM...</div>
+        <div id="insert-coin">INSERT COIN</div>
+        <div id="loading-bar-container">
+          <div id="loading-bar"></div>
+        </div>
+      </div>
+
+      <!-- Conteneur EmulatorJS (EJS_player cible cet id) -->
+      <!-- tabindex="-1" rend le div focusable programmatiquement pour les events clavier -->
+      <div id="emulator-container" tabindex="-1"></div>
+
+    </div>
+
+    <!-- Panneau info jeu -->
+    <aside id="player-info-panel" aria-label="Informations sur le jeu">
+
+      <img
+        id="player-cover-large"
+        src=""
+        alt="Pochette du jeu"
+        loading="lazy"
+      >
+
+      <div id="player-game-info">
+        <div class="info-row">
+          <span class="info-label">CONSOLE</span>
+          <span class="info-value" id="info-console"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">ANNÉE</span>
+          <span class="info-value" id="info-year"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">GENRE</span>
+          <span class="info-value" id="info-genre"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">DÉVELOPPEUR</span>
+          <span class="info-value" id="info-developer"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">JOUEURS</span>
+          <span class="info-value" id="info-players"></span>
+        </div>
+      </div>
+
+      <p id="player-description"></p>
+
+      <div id="bios-warning" class="hidden" role="alert">
+        ⚠ Ce jeu nécessite un BIOS. Configurez le chemin BIOS dans les paramètres EmulatorJS.
+      </div>
+
+      <div id="controls-section">
+        <span class="info-label">CONTRÔLES CLAVIER</span>
+        <div id="controls-panel"></div>
+        <p id="controls-hint">Appuyez sur <kbd>Esc</kbd> pour reconfigurer les touches dans l'émulateur.</p>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       JS MODULES
+  ════════════════════════════════════════════════════════════════════════ -->
+  <script src="js/catalog.js"></script>
+  <script src="js/gamepad.js"></script>
+  <script src="js/player.js"></script>
+
+  <script>
+    initPlayer();
+  </script>
+
+</body>
+</html>

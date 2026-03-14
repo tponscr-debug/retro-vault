@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --color-void: #040408;
+  --color-surface: #0a0a12;
+  --color-surface-2: #0f0f1a;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-bright: rgba(255, 255, 255, 0.15);
+
+  --neon-cyan: #00f5ff;
+  --neon-magenta: #ff0090;
+  --neon-yellow: #ffe600;
+  --neon-purple: #9b00ff;
+  --neon-green: #00ff88;
+  --neon-orange: #ff6600;
+
+  --console-nes: #e60012;
+  --console-snes: #6a0dad;
+  --console-n64: #00a550;
+  --console-gba: #8b1a8b;
+  --console-gbc: #e31837;
+  --console-gb: #8bac0f;
+  --console-ps1: #003087;
+  --console-genesis: #1a1aff;
+  --console-sms: #cc0000;
+  --console-gg: #0066cc;
+  --console-arcade: #ff6600;
+  --console-atari2600: #ff4500;
+
+  --glow-cyan: 0 0 8px rgba(0, 245, 255, 0.6), 0 0 20px rgba(0, 245, 255, 0.3), 0 0 40px rgba(0, 245, 255, 0.15);
+  --glow-magenta: 0 0 8px rgba(255, 0, 144, 0.6), 0 0 20px rgba(255, 0, 144, 0.3), 0 0 40px rgba(255, 0, 144, 0.15);
+  --glow-yellow: 0 0 8px rgba(255, 230, 0, 0.6), 0 0 20px rgba(255, 230, 0, 0.3), 0 0 40px rgba(255, 230, 0, 0.15);
+  --glow-purple: 0 0 8px rgba(155, 0, 255, 0.6), 0 0 20px rgba(155, 0, 255, 0.3), 0 0 40px rgba(155, 0, 255, 0.15);
+
+  --text-primary: #e8e8f0;
+  --text-secondary: #9090a8;
+  --text-muted: #505068;
+
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-display: 'Rajdhani', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.4s ease;
+}
+
+@keyframes neon-flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.4; }
+  97% { opacity: 1; }
+  98% { opacity: 0.2; }
+  99% { opacity: 1; }
+}
+
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  from {
+    text-shadow: 0 0 4px var(--neon-yellow), 0 0 10px rgba(255, 230, 0, 0.4);
+    opacity: 0.8;
+  }
+  to {
+    text-shadow: 0 0 12px var(--neon-yellow), 0 0 30px rgba(255, 230, 0, 0.7), 0 0 60px rgba(255, 230, 0, 0.3);
+    opacity: 1;
+  }
+}
+
+@keyframes scanline-scroll {
+  from { transform: translateY(0); }
+  to { transform: translateY(4px); }
+}
+
+.crt-overlay {
+  position: relative;
+}
+
+.crt-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  animation: scanline-scroll 0.1s linear infinite;
+}
+
+.neon-text {
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.console-badge-nes {
+  color: var(--console-nes);
+  border-color: var(--console-nes);
+  text-shadow: 0 0 8px rgba(230, 0, 18, 0.6);
+}
+
+.console-badge-snes {
+  color: var(--console-snes);
+  border-color: var(--console-snes);
+  text-shadow: 0 0 8px rgba(106, 13, 173, 0.6);
+}
+
+.console-badge-n64 {
+  color: var(--console-n64);
+  border-color: var(--console-n64);
+  text-shadow: 0 0 8px rgba(0, 165, 80, 0.6);
+}
+
+.console-badge-gba {
+  color: var(--console-gba);
+  border-color: var(--console-gba);
+  text-shadow: 0 0 8px rgba(139, 26, 139, 0.6);
+}
+
+.console-badge-gbc {
+  color: var(--console-gbc);
+  border-color: var(--console-gbc);
+  text-shadow: 0 0 8px rgba(227, 24, 55, 0.6);
+}
+
+.console-badge-gb {
+  color: var(--console-gb);
+  border-color: var(--console-gb);
+  text-shadow: 0 0 8px rgba(139, 172, 15, 0.6);
+}
+
+.console-badge-ps1 {
+  color: var(--console-ps1);
+  border-color: var(--console-ps1);
+  text-shadow: 0 0 8px rgba(0, 48, 135, 0.6);
+}
+
+.console-badge-genesis {
+  color: var(--console-genesis);
+  border-color: var(--console-genesis);
+  text-shadow: 0 0 8px rgba(26, 26, 255, 0.6);
+}
+
+.console-badge-sms {
+  color: var(--console-sms);
+  border-color: var(--console-sms);
+  text-shadow: 0 0 8px rgba(204, 0, 0, 0.6);
+}
+
+.console-badge-gg {
+  color: var(--console-gg);
+  border-color: var(--console-gg);
+  text-shadow: 0 0 8px rgba(0, 102, 204, 0.6);
+}
+
+.console-badge-arcade {
+  color: var(--console-arcade);
+  border-color: var(--console-arcade);
+  text-shadow: 0 0 8px rgba(255, 102, 0, 0.6);
+}
+
+.console-badge-atari2600 {
+  color: var(--console-atari2600);
+  border-color: var(--console-atari2600);
+  text-shadow: 0 0 8px rgba(255, 69, 0, 0.6);
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>EmulatorJS Debug</title>
+  <style>
+    body { background: #000; color: #0f0; font-family: monospace; padding: 20px; }
+    #log { white-space: pre; font-size: 13px; line-height: 1.6; }
+    #game { width: 640px; height: 480px; background: #111; margin: 20px 0; }
+    .ok { color: #0f0; } .err { color: #f00; } .info { color: #ff0; }
+  </style>
+</head>
+<body>
+  <h2>EmulatorJS Debug — Pac-Man Atari 2600</h2>
+  <div id="log"></div>
+  <div id="game"></div>
+
+  <script>
+    const log = document.getElementById('log');
+    function print(msg, cls='info') {
+      const line = document.createElement('div');
+      line.className = cls;
+      line.textContent = '[' + new Date().toISOString().substr(11,8) + '] ' + msg;
+      log.appendChild(line);
+      console.log(msg);
+    }
+
+    print('Page chargée');
+
+    // Test 1: proxy
+    const proxyUrl = 'http://localhost:8236/proxy/Pac-Man_1981_Atari.a26?url=' +
+      encodeURIComponent('https://archive.org/download/PacMan1981Atari/Pac-Man_1981_Atari.a26');
+    print('Proxy URL: ' + proxyUrl);
+
+    fetch(proxyUrl, { method: 'HEAD' })
+      .then(r => {
+        print('Proxy HEAD: ' + r.status + ' ' + r.headers.get('content-type'), r.ok ? 'ok' : 'err');
+        print('CORS: Access-Control-Allow-Origin = ' + r.headers.get('access-control-allow-origin'), 'ok');
+      })
+      .catch(e => print('Proxy error: ' + e, 'err'));
+
+    // Test 2: EmulatorJS
+    print('Chargement EmulatorJS...');
+    window.EJS_player        = '#game';
+    window.EJS_gameUrl       = proxyUrl;
+    window.EJS_core          = 'stella2014';
+    window.EJS_pathtodata    = 'https://cdn.emulatorjs.org/stable/data/';
+    window.EJS_startOnLoaded = true;
+    window.EJS_gameName      = 'Pac-Man';
+
+    window.EJS_onGameStart = () => {
+      print('✅ EJS_onGameStart déclenché !', 'ok');
+    };
+
+    window.addEventListener('error', e => {
+      print('JS ERROR: ' + e.message + ' (' + e.filename + ':' + e.lineno + ')', 'err');
+    });
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+    script.onload = () => print('loader.js chargé (non-async, currentScript OK)', 'ok');
+    script.onerror = e => print('loader.js FAILED: ' + e, 'err');
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

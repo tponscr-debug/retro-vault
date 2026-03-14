@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RETRO VAULT — Portail de jeux rétro personnel">
+  <title>RETRO VAULT</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/grid.css">
+
+  <!-- Fuse.js (doit être chargé AVANT search.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+</head>
+<body class="crt-overlay">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════════════════════════════════════ -->
+  <header id="site-header">
+    <div id="logo">RETRO VAULT</div>
+
+    <div id="search-wrapper">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="SEARCH GAMES..."
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Rechercher un jeu"
+      >
+      <span id="search-results-count" aria-live="polite"></span>
+    </div>
+
+    <!-- Badge manette -->
+    <div id="gamepad-badge" title="Aucune manette connectée" role="status" aria-label="État manette">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <!-- Corps de la manette -->
+        <path d="M17 4H7C4.2 4 2 6.2 2 9v2c0 2.8 2.2 5 5 5h2l2 2.5L13 16h4c2.8 0 5-2.2 5-5V9c0-2.8-2.2-5-5-5z"/>
+        <!-- Croix directionnelle (gauche) -->
+        <rect x="5" y="10" width="4" height="1.5" rx="0.5"/>
+        <rect x="6.25" y="8.75" width="1.5" height="4" rx="0.5"/>
+        <!-- Boutons action (droite) -->
+        <circle cx="16.5" cy="9.5" r="0.9"/>
+        <circle cx="18.5" cy="11" r="0.9"/>
+        <circle cx="14.5" cy="11" r="0.9"/>
+        <circle cx="16.5" cy="12.5" r="0.9"/>
+        <!-- Start / Select -->
+        <rect x="10.5" y="10.5" width="1.5" height="0.9" rx="0.45"/>
+        <rect x="12.5" y="10.5" width="1.5" height="0.9" rx="0.45"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       CONSOLE BAR (filtre rapide horizontal)
+  ════════════════════════════════════════════════════════════════════════ -->
+  <nav id="console-bar" aria-label="Filtrer par console">
+    <!-- Rempli dynamiquement par UI.renderConsoleBar() -->
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       LAYOUT PRINCIPAL : sidebar + grille
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div id="main-layout">
+
+    <!-- Sidebar filtres -->
+    <aside id="filter-sidebar" aria-label="Filtres">
+
+      <div class="filter-section">
+        <span class="filter-title">CONSOLE</span>
+        <div id="filter-console-list" class="filter-checkbox-group" role="group" aria-label="Filtrer par console">
+          <!-- Rempli par UI.renderFilters() -->
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <span class="filter-title">GENRE</span>
+        <div id="filter-genre-list" class="filter-checkbox-group" role="group" aria-label="Filtrer par genre">
+          <!-- Rempli par UI.renderFilters() -->
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <span class="filter-title">ANNÉE</span>
+        <div id="year-range">
+          <input
+            type="number"
+            id="year-input-min"
+            placeholder="1977"
+            min="1977"
+            max="2010"
+            aria-label="Année minimum"
+          >
+          <span>—</span>
+          <input
+            type="number"
+            id="year-input-max"
+            placeholder="2010"
+            min="1977"
+            max="2010"
+            aria-label="Année maximum"
+          >
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <span id="games-count" aria-live="polite"></span>
+      </div>
+
+    </aside>
+
+    <!-- Zone principale grille -->
+    <main id="grid-container">
+      <div id="game-grid" role="list" aria-label="Bibliothèque de jeux"></div>
+
+      <!-- État vide -->
+      <div id="empty-state" class="hidden" role="status">
+        <p>NO GAMES FOUND</p>
+        <p>Try a different search or filter</p>
+      </div>
+
+      <!-- Sentinel pour l'infinite scroll -->
+      <div id="loading-sentinel" aria-hidden="true"></div>
+    </main>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       JS MODULES (ordre : dépendances d'abord)
+  ════════════════════════════════════════════════════════════════════════ -->
+  <script src="js/catalog.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/gamepad.js"></script>
+  <script src="js/ui.js"></script>
+
+  <script>
+    // Bootstrap : charger le catalogue puis initialiser l'UI
+    (async () => {
+      try {
+        const games    = await CatalogAPI.load();
+        const consoles = CatalogAPI.getConsoles();
+        const genres   = CatalogAPI.getGenres();
+
+        SearchAPI.init(games);
+        UI.init();
+        UI.renderConsoleBar(consoles);
+        UI.renderFilters(consoles, genres);
+        UI.renderGames(games);
+      } catch (e) {
+        console.error('[bootstrap] Erreur au chargement du catalogue :', e);
+      }
+    })();
+  </script>
+
+</body>
+</html>

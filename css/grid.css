@@ -1,0 +1,374 @@
+@import './base.css';
+
+#site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 32px;
+  background: var(--color-surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+#logo {
+  font-family: var(--font-pixel);
+  font-size: 20px;
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  animation: neon-flicker 8s infinite;
+  letter-spacing: 0.05em;
+  cursor: default;
+  user-select: none;
+}
+
+#search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#search-input {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 10px 16px;
+  width: 320px;
+  border-radius: 0;
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+#search-input::placeholder {
+  color: var(--text-muted);
+}
+
+#search-input:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 245, 255, 0.15);
+}
+
+#gamepad-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+  flex-shrink: 0;
+}
+
+#gamepad-badge.active {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+#gamepad-badge svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+#console-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  flex-shrink: 0;
+}
+
+#console-bar::-webkit-scrollbar {
+  height: 3px;
+}
+
+.console-btn {
+  padding: 6px 14px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  transition: color var(--transition-base), border-color var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  border-radius: 0;
+}
+
+.console-btn:hover {
+  color: var(--text-primary);
+  border-color: currentColor;
+}
+
+.console-btn.active {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  background: rgba(0, 245, 255, 0.08);
+}
+
+#main-layout {
+  display: flex;
+  height: calc(100vh - 113px);
+}
+
+#filter-sidebar {
+  width: 240px;
+  min-width: 240px;
+  padding: 24px 20px;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.filter-section {
+  margin-bottom: 28px;
+}
+
+.filter-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.filter-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.filter-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: color var(--transition-base);
+  user-select: none;
+}
+
+.filter-checkbox label:hover {
+  color: var(--text-primary);
+}
+
+.filter-checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--color-border-bright);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background var(--transition-base), border-color var(--transition-base);
+}
+
+.filter-checkbox input[type="checkbox"]:checked {
+  background: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+}
+
+.filter-checkbox input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--color-void);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+#year-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#year-range span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+#year-input-min,
+#year-input-max {
+  width: 60px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 8px;
+  text-align: center;
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  border-radius: 0;
+}
+
+#year-input-min:focus,
+#year-input-max:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 1px rgba(0, 245, 255, 0.2);
+}
+
+#grid-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+}
+
+#games-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 0 16px 0;
+  display: block;
+}
+
+#game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.game-card {
+  position: relative;
+  cursor: pointer;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow var(--transition-base), border-color var(--transition-base);
+  animation: card-appear 0.3s ease forwards;
+  opacity: 0;
+}
+
+.game-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.game-card__cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-card__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--color-void) 0%, var(--color-surface) 100%);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 16px;
+  gap: 12px;
+}
+
+.game-card__placeholder::before {
+  content: '?';
+  font-family: var(--font-pixel);
+  font-size: 32px;
+  color: var(--color-border-bright);
+}
+
+.game-card__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(4, 4, 8, 0.95));
+  padding: 32px 12px 10px;
+  transform: translateY(100%);
+  transition: transform var(--transition-base);
+}
+
+.game-card:hover .game-card__overlay {
+  transform: translateY(0);
+}
+
+.game-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.game-card__console-badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 2px 6px;
+  margin-bottom: 6px;
+  border: 1px solid currentColor;
+}
+
+.game-card__meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 8px;
+}
+
+#loading-sentinel {
+  height: 20px;
+  width: 100%;
+}
+
+#empty-state {
+  text-align: center;
+  padding: 80px 40px;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 16px;
+  grid-column: 1 / -1;
+}
+
+#empty-state p {
+  margin-top: 12px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+}
